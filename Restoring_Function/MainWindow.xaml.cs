@@ -35,18 +35,13 @@ namespace Restoring_Function
 
         public MainWindow()
         {
-            // 1. Создаем словарь
+            //Создаем словарь
             dataSets = new Dictionary<string, FunctionData>();
 
             InitializeComponent();
 
-            // 3. Устанавливаем контекст данных
+            //Устанавливаем контекст данных
             DataContext = this;
-
-            // 4. Загружаем данные по умолчанию
-            LoadDataSet("Real");
-
-            
         }      
 
         /// <summary>
@@ -68,7 +63,7 @@ namespace Restoring_Function
                 // После загрузки данных
                 XValuesDisplay.Text = string.Join("; ", currentData.X.Select(x => x.ToString("F4")));
                 YValuesDisplay.Text = string.Join("; ", currentData.Y.Select(y => y.ToString("F4")));
-                DeltaDisplay.Text = $"Погрешность δ: {currentData.Delta}";    
+                DeltaDisplay.Text = $"Погрешность δ = {currentData.Delta}";    
             }
         }
 
@@ -123,6 +118,17 @@ namespace Restoring_Function
             {
                 DeviationResult.Text = "Отклонение: 0.00 (ожидание расчета)";
             }
+        }
+
+        private void ResetButton_Click(object sender, RoutedEventArgs e)
+        {
+            currentData = null;
+            dataSets["UserData"] = null;
+            XValuesDisplay.Text = "-";
+            YValuesDisplay.Text = "-";
+            DeltaDisplay.Text = $"Погрешность δ = 0";
+            GxResult.Text = "-";
+            DeviationResult.Text = "-";
         }
     }
 }

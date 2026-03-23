@@ -82,89 +82,118 @@
                 </StackPanel>
             </Border>
 
-            <!-- Информация о погрешности -->
-            <Border Background="#F0F0F0" 
-                    Padding="8" 
-                    CornerRadius="5">
-                <TextBlock x:Name="DeltaDisplay" 
-                           Text="Погрешность δ: не задана"
-                           FontStyle="Italic"
-                           FontSize="11"
-                           TextWrapping="Wrap"/>
-            </Border>
+            <Button x:Name="ResetButton" 
+                    Content="Сбросить"
+                    Padding="10,8"
+                    Background="#FFFF5C00"
+                    FontWeight="Bold"
+                    Margin="0,15,0,20" Click="ResetButton_Click"/>
         </StackPanel>
 
         <!-- ========== ПРАВАЯ ПАНЕЛЬ: ДАННЫЕ И ГРАФИК ========== -->
-        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
-            <StackPanel Margin="0,0,0,10">
+        <Grid Grid.Column="1" Margin="0,0,0,10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <!-- Блок с X и Y -->
+                <RowDefinition Height="*"/>
+                <!-- Блок с графиком (растягивается) -->
+            </Grid.RowDefinitions>
 
-                <!-- Блок с таблицами X и Y (в строку) -->
-                <Border Background="#F9F9F9" 
-                        Padding="10" 
-                        CornerRadius="5"
-                        BorderBrush="#DDD"
-                        BorderThickness="1"
-                        Margin="0,0,0,15">
-                    <StackPanel>
-                        <TextBlock Text="📋 Экспериментальные данные" 
-                                   FontWeight="Bold" 
-                                   Margin="0,0,0,10"/>
+            <!-- Блок с X и Y -->
+            <Border Grid.Row="0"
+            Background="#F9F9F9" 
+            Padding="10" 
+            CornerRadius="5"
+            BorderBrush="#DDD"
+            BorderThickness="1"
+            Margin="0,0,0,15">
+                <StackPanel>
+                    <TextBlock Text="📋 Параметры функции" 
+                       FontWeight="Bold" 
+                       Margin="0,0,0,10"/>
 
-                        <!-- X значения -->
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <TextBlock Text="X: " 
-                                       FontWeight="Bold" 
-                                       VerticalAlignment="Top"
-                                       Margin="0,0,5,0"/>
-                            <TextBlock x:Name="XValuesDisplay" 
-                                       Text="—" 
-                                       TextWrapping="Wrap"
-                                       FontFamily="Consolas"/>
-                        </StackPanel>
-
-                        <!-- Y значения -->
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Y: " 
-                                       FontWeight="Bold" 
-                                       VerticalAlignment="Top"
-                                       Margin="0,0,5,0"/>
-                            <TextBlock x:Name="YValuesDisplay" 
-                                       Text="—" 
-                                       TextWrapping="Wrap"
-                                       FontFamily="Consolas"/>
-                        </StackPanel>
+                    <!-- X значения -->
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <TextBlock Text="X: " 
+                           FontWeight="Bold" 
+                           VerticalAlignment="Top"
+                           FontSize="14"
+                           Margin="0,0,5,0"/>
+                        <TextBlock x:Name="XValuesDisplay" 
+                           Text="—" 
+                           TextWrapping="Wrap"
+                           FontFamily="Consolas"
+                           FontSize="14"/>
                     </StackPanel>
-                </Border>
 
-                <!-- Блок с графиком -->
-                <Border Background="White" 
-                        Padding="10" 
-                        CornerRadius="5"
-                        BorderBrush="#DDD"
-                        BorderThickness="1">
-                    <StackPanel>
-                        <TextBlock Text="📈 График восстановленной функции" 
-                                   FontWeight="Bold" 
-                                   Margin="0,0,0,10"/>
-
-                        <!-- Canvas для рисования графика -->
-                        <Border Background="White" 
-                                BorderBrush="Gray" 
-                                BorderThickness="1"
-                                Height="350">
-                            <Canvas x:Name="GraphCanvas" 
-                                    Background="White"
-                                    ClipToBounds="True"/>
-                        </Border>
-
-                        <TextBlock Text="Синие точки — экспериментальные данные, Красная линия — g(x)" 
-                                   FontSize="10"
-                                   Foreground="Gray"
-                                   Margin="0,8,0,0"
-                                   HorizontalAlignment="Center"/>
+                    <!-- Y значения -->
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Y: " 
+                           FontWeight="Bold" 
+                           VerticalAlignment="Top"
+                           FontSize="14"
+                           Margin="0,0,5,0"/>
+                        <TextBlock x:Name="YValuesDisplay" 
+                           Text="—" 
+                           FontSize="14"
+                           TextWrapping="Wrap"
+                           FontFamily="Consolas"/>
                     </StackPanel>
-                </Border>
-            </StackPanel>
-        </ScrollViewer>
+
+                    <TextBlock x:Name="DeltaDisplay" 
+                       Margin="0 15 0 5"
+                       Text="Погрешность δ = 0"
+                       FontStyle="Italic"
+                       FontSize="14"
+                       TextWrapping="Wrap"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Блок с графиком (растягивается) -->
+            <Border Grid.Row="1"
+            Background="White" 
+            Padding="10" 
+            CornerRadius="5"
+            BorderBrush="#DDD"
+            BorderThickness="1">
+                <DockPanel>
+                    <!-- Заголовок (прижат к верху) -->
+                    <TextBlock Text="📈 График восстановленной функции" 
+                       FontWeight="Bold" 
+                       Margin="0,0,0,10"
+                       DockPanel.Dock="Top"/>
+
+                    <!-- Подпись (прижата к низу) -->
+                    <DockPanel DockPanel.Dock="Bottom">
+                        <TextBlock 
+                            DockPanel.Dock="Left"
+                            Text="Синие точки — экспериментальные данные, " 
+                            FontSize="14"
+                            Foreground="#FF1242E4"
+                            Margin="0,8,0,0"
+                            HorizontalAlignment="Center"
+                       />
+                        <TextBlock 
+                            DockPanel.Dock="Right"
+                            Text="Красная линия — g(x)" 
+                            FontSize="14"
+                            Foreground="#FFF41313"
+                            Margin="0,8,0,0"
+                            HorizontalAlignment="Center"
+                       />
+                    </DockPanel>
+
+                    <!-- График (занимает всё оставшееся место) -->
+                    <Border Background="White" 
+                    BorderBrush="Gray" 
+                    BorderThickness="1">
+                        <oxy:PlotView 
+                            Model="{Binding PlotModel, ElementName=MainWindowName}"
+                            Background="#FFF9F9F9"
+                            FontSize="14"/>
+                    </Border>
+                </DockPanel>
+            </Border>
+        </Grid>
     </Grid>
 </Window>
