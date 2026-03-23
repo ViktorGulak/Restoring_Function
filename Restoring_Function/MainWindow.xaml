@@ -1,0 +1,170 @@
+﻿<Window x:Class="Restoring_Function.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Restoring_Function" xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf"
+        mc:Ignorable="d"
+        Title="Восстановление функции (МНК)" Height="550" Width="800" WindowState="Maximized">
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="280"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- ========== ЛЕВАЯ ПАНЕЛЬ: УПРАВЛЕНИЕ ========== -->
+        <StackPanel Grid.Column="0" Margin="0,0,10,0">
+
+            <!-- Заголовок -->
+            <TextBlock Text="Восстановление функции" 
+                       FontSize="16" 
+                       FontWeight="Bold" 
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,15"/>
+
+            <TextBlock Text="Метод наименьших квадратов" 
+                       FontSize="12"
+                       HorizontalAlignment="Center"
+                       Foreground="Gray"
+                       Margin="0,-10,0,15"/>
+
+            <!-- Кнопка загрузки данных -->
+            <Button x:Name="EditDataButton" 
+                    Content="📂 Загрузить / редактировать данные"
+                    Padding="10,8"
+                    Margin="0,0,0,15"
+                    Click="EditDataButton_Click"
+                    Background="LightBlue"
+                    FontWeight="SemiBold"
+                    FontSize="12"/>
+
+            <!-- Тип аппроксимации -->
+            <TextBlock Text="Тип аппроксимации g(x):" 
+                       FontWeight="Bold" 
+                       Margin="0,0,0,5"/>
+            <ComboBox x:Name="ApproxTypeComboBox" 
+                      Height="30" 
+                      SelectedIndex="1"
+                      Margin="0,0,0,15">
+                <ComboBoxItem Content="Линейная (y = a·x + b)" Tag="Linear"/>
+                <ComboBoxItem Content="Квадратичная (y = a·x² + b·x + c)" Tag="Quadratic"/>
+                <ComboBoxItem Content="Кубическая (y = a·x³ + b·x² + c·x + d)" Tag="Cubic"/>
+            </ComboBox>
+
+            <!-- Кнопка расчёта -->
+            <Button x:Name="CalculateButton" 
+                    Content="🧮 Рассчитать"
+                    Padding="10,8"
+                    Background="LightGreen"
+                    FontWeight="Bold"
+                    Click="CalculateButton_Click"
+                    Margin="0,0,0,20"/>
+
+            <!-- Результат аппроксимации -->
+            <Border Background="#FFF8E7" 
+                    Padding="10" 
+                    Margin="0,0,0,15">
+                <StackPanel>
+                    <TextBlock Text="📐 Полученная формула g(x):" 
+                               FontWeight="Bold" 
+                               Margin="0,0,0,8"/>
+                    <TextBlock x:Name="GxResult" 
+                               Text="—" 
+                               FontFamily="Consolas"
+                               FontSize="12"
+                               TextWrapping="Wrap"/>
+                    <TextBlock x:Name="DeviationResult" 
+                               Text="—" 
+                               Margin="0,8,0,0"
+                               FontFamily="Consolas"
+                               FontSize="11"
+                               Foreground="Gray"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Информация о погрешности -->
+            <Border Background="#F0F0F0" 
+                    Padding="8" 
+                    CornerRadius="5">
+                <TextBlock x:Name="DeltaDisplay" 
+                           Text="Погрешность δ: не задана"
+                           FontStyle="Italic"
+                           FontSize="11"
+                           TextWrapping="Wrap"/>
+            </Border>
+        </StackPanel>
+
+        <!-- ========== ПРАВАЯ ПАНЕЛЬ: ДАННЫЕ И ГРАФИК ========== -->
+        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="0,0,0,10">
+
+                <!-- Блок с таблицами X и Y (в строку) -->
+                <Border Background="#F9F9F9" 
+                        Padding="10" 
+                        CornerRadius="5"
+                        BorderBrush="#DDD"
+                        BorderThickness="1"
+                        Margin="0,0,0,15">
+                    <StackPanel>
+                        <TextBlock Text="📋 Экспериментальные данные" 
+                                   FontWeight="Bold" 
+                                   Margin="0,0,0,10"/>
+
+                        <!-- X значения -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="X: " 
+                                       FontWeight="Bold" 
+                                       VerticalAlignment="Top"
+                                       Margin="0,0,5,0"/>
+                            <TextBlock x:Name="XValuesDisplay" 
+                                       Text="—" 
+                                       TextWrapping="Wrap"
+                                       FontFamily="Consolas"/>
+                        </StackPanel>
+
+                        <!-- Y значения -->
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Y: " 
+                                       FontWeight="Bold" 
+                                       VerticalAlignment="Top"
+                                       Margin="0,0,5,0"/>
+                            <TextBlock x:Name="YValuesDisplay" 
+                                       Text="—" 
+                                       TextWrapping="Wrap"
+                                       FontFamily="Consolas"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Блок с графиком -->
+                <Border Background="White" 
+                        Padding="10" 
+                        CornerRadius="5"
+                        BorderBrush="#DDD"
+                        BorderThickness="1">
+                    <StackPanel>
+                        <TextBlock Text="📈 График восстановленной функции" 
+                                   FontWeight="Bold" 
+                                   Margin="0,0,0,10"/>
+
+                        <!-- Canvas для рисования графика -->
+                        <Border Background="White" 
+                                BorderBrush="Gray" 
+                                BorderThickness="1"
+                                Height="350">
+                            <Canvas x:Name="GraphCanvas" 
+                                    Background="White"
+                                    ClipToBounds="True"/>
+                        </Border>
+
+                        <TextBlock Text="Синие точки — экспериментальные данные, Красная линия — g(x)" 
+                                   FontSize="10"
+                                   Foreground="Gray"
+                                   Margin="0,8,0,0"
+                                   HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>
