@@ -85,6 +85,7 @@
     </Compile>
     <Compile Include="Logic\DataPoint.cs" />
     <Compile Include="Logic\FunctionData.cs" />
+    <Compile Include="Logic\ScheduleManager.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

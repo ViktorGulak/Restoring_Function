@@ -49,6 +49,7 @@
                 <ComboBoxItem Content="Линейная (y = a·x + b)" Tag="Linear"/>
                 <ComboBoxItem Content="Квадратичная (y = a·x² + b·x + c)" Tag="Quadratic"/>
                 <ComboBoxItem Content="Кубическая (y = a·x³ + b·x² + c·x + d)" Tag="Cubic"/>
+                <ComboBoxItem Content="Показательная (y = a·eᵇˣ)" Tag="Exponential"/>
             </ComboBox>
 
             <!-- Кнопка расчёта -->
@@ -188,9 +189,9 @@
                     BorderBrush="Gray" 
                     BorderThickness="1">
                         <oxy:PlotView 
-                            Model="{Binding PlotModel, ElementName=MainWindowName}"
-                            Background="#FFF9F9F9"
-                            FontSize="14"/>
+                            Model="{Binding PlotModel, RelativeSource={RelativeSource AncestorType=Window}}"
+                            Background="White"
+                            FontSize="12"/>
                     </Border>
                 </DockPanel>
             </Border>

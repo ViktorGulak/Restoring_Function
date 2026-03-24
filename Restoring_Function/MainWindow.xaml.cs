@@ -35,6 +35,8 @@ namespace Restoring_Function
 
         public MainWindow()
         {
+            // Инициализируем модель графика
+            PlotModel = new PlotModel { Title = "График восстановленной функции" };
             //Создаем словарь
             dataSets = new Dictionary<string, FunctionData>();
 
@@ -88,6 +90,7 @@ namespace Restoring_Function
                 // Добавляем в словарь и загружаем
                 dataSets["UserData"] = userData;
                 LoadDataSet("UserData");
+                ScheduleManager.DrawPoints(PlotModel, x, y);
 
                 MessageBox.Show($"Загружено {x.Length} точек. Погрешность: {delta}",
                                 "Готово", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -129,6 +132,7 @@ namespace Restoring_Function
             DeltaDisplay.Text = $"Погрешность δ = 0";
             GxResult.Text = "-";
             DeviationResult.Text = "-";
+            ScheduleManager.ClearPlot(PlotModel);
         }
     }
 }
