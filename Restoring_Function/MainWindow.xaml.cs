@@ -99,27 +99,54 @@ namespace Restoring_Function
 
         private void CalculateButton_Click(object sender, RoutedEventArgs e)
         {
-            if (currentData == null)
+            if (currentData == null || currentData.X.Length == 0)
             {
-                MessageBox.Show("Нет данных для расчета", "Ошибка",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Сначала загрузите данные через кнопку 'Загрузить / редактировать данные'",
+                    "Нет данных", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
             // Получаем выбранный тип аппроксимации
             string approxType = "Quadratic";
-            if (ApproxTypeComboBox.SelectedItem is ComboBoxItem item)
+            if (ApproxTypeComboBox.SelectedItem is System.Windows.Controls.ComboBoxItem item)
             {
                 approxType = item.Tag as string ?? "Quadratic";
             }
 
-            // Здесь будет вызов МНК
-            GxResult.Text = "Расчет будет здесь";
-
-            // Для тестов считаем отклонение
-            if (currentData.IsTest)
+            try
             {
-                DeviationResult.Text = "Отклонение: 0.00 (ожидание расчета)";
+                LeastSquaresCalculator calculator = new LeastSquaresCalculator();
+                ApproximationResult result = null;
+
+                switch (approxType)
+                {
+                    case "Quadratic":
+                        result = calculator.Quadratic(currentData.X, currentData.Y);
+                        break;
+                    case "Exponential":
+                        result = calculator.Exponential(currentData.X, currentData.Y);
+                        break;
+                    default:
+                        result = calculator.Quadratic(currentData.X, currentData.Y);
+                        break;
+                }
+
+                // Выводим результат
+                GxResult.Text = result.Formula;
+
+                string comparison = result.StandardDeviation <= currentData.Delta
+                    ? $"✓ Отклонение σ = {result.StandardDeviation:F4} ≤ δ = {currentData.Delta} → модель адекватна"
+                    : $"✗ Отклонение σ = {result.StandardDeviation:F4} > δ = {currentData.Delta} → модель неадекватна";
+
+                DeviationResult.Text = comparison;
+
+                // Рисуем график с точками и линией аппроксимации
+                ScheduleManager.DrawPointsAndFunction(PlotModel, currentData.X, currentData.Y, result);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при расчете:\n{ex.Message}",
+                    "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
