@@ -36,7 +36,7 @@ namespace Restoring_Function
         public MainWindow()
         {
             // Инициализируем модель графика
-            PlotModel = new PlotModel { Title = "График восстановленной функции" };
+            PlotModel = new PlotModel();
             //Создаем словарь
             dataSets = new Dictionary<string, FunctionData>();
 

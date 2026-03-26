@@ -17,35 +17,34 @@
 
             <!-- Заголовок -->
             <TextBlock Text="Восстановление функции" 
-                       FontSize="16" 
-                       FontWeight="Bold" 
-                       HorizontalAlignment="Center"
-                       Margin="0,0,0,15"/>
+                   FontSize="16" 
+                   FontWeight="Bold" 
+                   HorizontalAlignment="Center"
+                   Margin="0,0,0,15"/>
 
             <TextBlock Text="Метод наименьших квадратов" 
-                       FontSize="12"
-                       HorizontalAlignment="Center"
-                       Foreground="Gray"
-                       Margin="0,-10,0,15"/>
+                   FontSize="12"
+                   HorizontalAlignment="Center"
+                   Foreground="Gray"
+                   Margin="0,-10,0,15"/>
 
             <!-- Кнопка загрузки данных -->
             <Button x:Name="EditDataButton" 
-                    Content="📂 Загрузить / редактировать данные"
-                    Padding="10,8"
-                    Margin="0,0,0,15"
-                    Click="EditDataButton_Click"
-                    Background="LightBlue"
-                    FontWeight="SemiBold"
-                    FontSize="12"/>
+                Content="📂 Загрузить / редактировать данные"
+                Padding="10,8"
+                Click="EditDataButton_Click"
+                Background="LightBlue"
+                FontWeight="SemiBold"
+                FontSize="12"/>
 
             <!-- Тип аппроксимации -->
             <TextBlock Text="Тип аппроксимации g(x):" 
-                       FontWeight="Bold" 
-                       Margin="0,0,0,5"/>
+                   FontWeight="Bold" 
+                   Margin="0,15,0,0"/>
             <ComboBox x:Name="ApproxTypeComboBox" 
-                      Height="30" 
-                      SelectedIndex="1"
-                      Margin="0,0,0,15">
+                  Height="30" 
+                  SelectedIndex="1"
+                  Margin="0,3,0, 0">
                 <ComboBoxItem Content="Линейная (y = a·x + b)" Tag="Linear"/>
                 <ComboBoxItem Content="Квадратичная (y = a·x² + b·x + c)" Tag="Quadratic"/>
                 <ComboBoxItem Content="Кубическая (y = a·x³ + b·x² + c·x + d)" Tag="Cubic"/>
@@ -54,41 +53,19 @@
 
             <!-- Кнопка расчёта -->
             <Button x:Name="CalculateButton" 
-                    Content="🧮 Рассчитать"
-                    Padding="10,8"
-                    Background="LightGreen"
-                    FontWeight="Bold"
-                    Click="CalculateButton_Click"
-                    Margin="0,0,0,20"/>
-
-            <!-- Результат аппроксимации -->
-            <Border Background="#FFF8E7" 
-                    Padding="10" 
-                    Margin="0,0,0,15">
-                <StackPanel>
-                    <TextBlock Text="📐 Полученная формула g(x):" 
-                               FontWeight="Bold" 
-                               Margin="0,0,0,8"/>
-                    <TextBlock x:Name="GxResult" 
-                               Text="—" 
-                               FontFamily="Consolas"
-                               FontSize="12"
-                               TextWrapping="Wrap"/>
-                    <TextBlock x:Name="DeviationResult" 
-                               Text="—" 
-                               Margin="0,8,0,0"
-                               FontFamily="Consolas"
-                               FontSize="11"
-                               Foreground="Gray"/>
-                </StackPanel>
-            </Border>
+                Content="🧮 Рассчитать"
+                Padding="10,8"
+                Background="LightGreen"
+                FontWeight="Bold"
+                Click="CalculateButton_Click"
+                Margin="0,15,0,0"/>
 
             <Button x:Name="ResetButton" 
-                    Content="Сбросить"
-                    Padding="10,8"
-                    Background="#FFFF5C00"
-                    FontWeight="Bold"
-                    Margin="0,15,0,20" Click="ResetButton_Click"/>
+                Content="Сбросить"
+                Padding="10,8"
+                Background="#FFFF5C00"
+                FontWeight="Bold"
+                Margin="0,15,0, 0" Click="ResetButton_Click"/>
         </StackPanel>
 
         <!-- ========== ПРАВАЯ ПАНЕЛЬ: ДАННЫЕ И ГРАФИК ========== -->
@@ -97,102 +74,126 @@
                 <RowDefinition Height="Auto"/>
                 <!-- Блок с X и Y -->
                 <RowDefinition Height="*"/>
-                <!-- Блок с графиком (растягивается) -->
+                <!-- Блок с графиком и результатом (растягивается) -->
             </Grid.RowDefinitions>
 
             <!-- Блок с X и Y -->
             <Border Grid.Row="0"
-            Background="#F9F9F9" 
-            Padding="10" 
-            CornerRadius="5"
-            BorderBrush="#DDD"
-            BorderThickness="1"
-            Margin="0,0,0,15">
+                Background="#F9F9F9"  
+                CornerRadius="5"
+                BorderBrush="#DDD"
+                BorderThickness="1"
+                Padding="5"
+                Margin="0,0,0,5">
                 <StackPanel>
                     <TextBlock Text="📋 Параметры функции" 
-                       FontWeight="Bold" 
-                       Margin="0,0,0,10"/>
+                           FontWeight="Bold" 
+                           Margin="0,0,0,10"/>
 
                     <!-- X значения -->
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                         <TextBlock Text="X: " 
-                           FontWeight="Bold" 
-                           VerticalAlignment="Top"
-                           FontSize="14"
-                           Margin="0,0,5,0"/>
+                               FontWeight="Bold" 
+                               VerticalAlignment="Top"
+                               FontSize="14"
+                               Margin="0,0,5,0"/>
                         <TextBlock x:Name="XValuesDisplay" 
-                           Text="—" 
-                           TextWrapping="Wrap"
-                           FontFamily="Consolas"
-                           FontSize="14"/>
+                               Text="—" 
+                               TextWrapping="Wrap"
+                               FontFamily="Consolas"
+                               FontSize="14"/>
                     </StackPanel>
 
                     <!-- Y значения -->
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Y: " 
-                           FontWeight="Bold" 
-                           VerticalAlignment="Top"
-                           FontSize="14"
-                           Margin="0,0,5,0"/>
+                               FontWeight="Bold" 
+                               VerticalAlignment="Top"
+                               FontSize="14"
+                               Margin="0,0,5,0"/>
                         <TextBlock x:Name="YValuesDisplay" 
-                           Text="—" 
-                           FontSize="14"
-                           TextWrapping="Wrap"
-                           FontFamily="Consolas"/>
+                               Text="—" 
+                               FontSize="14"
+                               TextWrapping="Wrap"
+                               FontFamily="Consolas"/>
                     </StackPanel>
 
                     <TextBlock x:Name="DeltaDisplay" 
-                       Margin="0 15 0 5"
-                       Text="Погрешность δ = 0"
-                       FontStyle="Italic"
-                       FontSize="14"
-                       TextWrapping="Wrap"/>
+                           Margin="0 15 0 5"
+                           Text="Погрешность δ = 0"
+                           FontStyle="Italic"
+                           FontSize="14"
+                           TextWrapping="Wrap"/>
                 </StackPanel>
             </Border>
 
-            <!-- Блок с графиком (растягивается) -->
+            <!-- Блок с графиком и результатом (растягивается) -->
             <Border Grid.Row="1"
-            Background="White" 
-            Padding="10" 
-            CornerRadius="5"
-            BorderBrush="#DDD"
-            BorderThickness="1">
+                Background="White"  
+                CornerRadius="5"
+                BorderBrush="#DDD"
+               Padding="5"
+                BorderThickness="1">
                 <DockPanel>
                     <!-- Заголовок (прижат к верху) -->
                     <TextBlock Text="📈 График восстановленной функции" 
-                       FontWeight="Bold" 
-                       Margin="0,0,0,10"
-                       DockPanel.Dock="Top"/>
+                           FontWeight="Bold" 
+                           Margin="0,0,0,10"
+                           DockPanel.Dock="Top"/>
 
-                    <!-- Подпись (прижата к низу) -->
-                    <DockPanel DockPanel.Dock="Bottom">
-                        <TextBlock 
+                    <!-- Результат аппроксимации (прижат к низу) -->
+                    <Border Background="#FFF8E7" 
+                        Padding="10" 
+                        Margin="0,10,0,0"
+                        DockPanel.Dock="Bottom">
+                        <StackPanel>
+                            <TextBlock Text="📐 Полученная формула g(x):" 
+                                   FontWeight="Bold" 
+                                   Margin="0,0,0,8"/>
+                            <TextBlock x:Name="GxResult" 
+                                   Text="—" 
+                                   FontFamily="Consolas"
+                                   FontSize="14"
+                                   TextWrapping="Wrap"/>
+                            <TextBlock x:Name="DeviationResult" 
+                                   Text="—" 
+                                   Margin="0,8,0,0"
+                                   FontFamily="Consolas"
+                                   FontSize="14"
+                                   />
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Контейнер для графика и подписей (занимает всё оставшееся место) -->
+                    <DockPanel>
+                        <!-- Подписи (прижаты к низу контейнера графика) -->
+                        <DockPanel DockPanel.Dock="Bottom">
+                            <TextBlock 
                             DockPanel.Dock="Left"
                             Text="Синие точки — экспериментальные данные, " 
                             FontSize="14"
                             Foreground="#FF1242E4"
                             Margin="0,8,0,0"
-                            HorizontalAlignment="Center"
-                       />
-                        <TextBlock 
+                            HorizontalAlignment="Center"/>
+                            <TextBlock 
                             DockPanel.Dock="Right"
                             Text="Красная линия — g(x)" 
                             FontSize="14"
                             Foreground="#FFF41313"
                             Margin="0,8,0,0"
-                            HorizontalAlignment="Center"
-                       />
-                    </DockPanel>
+                            HorizontalAlignment="Center"/>
+                        </DockPanel>
 
-                    <!-- График (занимает всё оставшееся место) -->
-                    <Border Background="White" 
-                    BorderBrush="Gray" 
-                    BorderThickness="1">
-                        <oxy:PlotView 
+                        <!-- График (занимает всё оставшееся место) -->
+                        <Border Background="White" 
+                            BorderBrush="Gray" 
+                            BorderThickness="1">
+                            <oxy:PlotView 
                             Model="{Binding PlotModel, RelativeSource={RelativeSource AncestorType=Window}}"
                             Background="White"
                             FontSize="12"/>
-                    </Border>
+                        </Border>
+                    </DockPanel>
                 </DockPanel>
             </Border>
         </Grid>

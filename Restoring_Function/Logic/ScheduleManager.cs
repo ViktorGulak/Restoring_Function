@@ -56,37 +56,14 @@ namespace Restoring_Function.Logic
         /// </summary>
         public static void DrawPointsAndFunction(PlotModel plotModel, double[] x, double[] y, ApproximationResult result)
         {
-            if (plotModel == null) return;
-            if (x == null || y == null || x.Length == 0) return;
-            if (result == null) return;
-
-            // Очищаем текущие серии на графике
-            plotModel.Series.Clear();
-
-            // 1. Рисуем экспериментальные точки
-            var scatterSeries = new ScatterSeries
-            {
-                Title = "Экспериментальные точки",
-                MarkerType = MarkerType.Circle,
-                MarkerSize = 6,
-                MarkerFill = OxyColors.Blue,
-                MarkerStroke = OxyColors.DarkBlue,
-                MarkerStrokeThickness = 1
-            };
-
-            for (int i = 0; i < x.Length; i++)
-            {
-                scatterSeries.Points.Add(new ScatterPoint(x[i], y[i]));
-            }
-
-            plotModel.Series.Add(scatterSeries);
+            DrawPoints(plotModel, x, y);
 
             // 2. Рисуем линию аппроксимации
             var lineSeries = new LineSeries
             {
                 Title = result.Formula,
                 Color = OxyColors.Red,
-                StrokeThickness = 2,
+                StrokeThickness = 3,
                 LineStyle = LineStyle.Solid,
                 MarkerType = MarkerType.None
             };
@@ -146,7 +123,7 @@ namespace Restoring_Function.Logic
                 Position = OxyPlot.Axes.AxisPosition.Bottom,
                 Minimum = -8,
                 Maximum = 8,
-                MajorStep = 1,
+                MajorStep = 10,
                 AxislineStyle = LineStyle.Solid,
                 AxislineColor = OxyColors.Black,
                 AxislineThickness = 1,
