@@ -6,20 +6,53 @@ using System.Threading.Tasks;
 
 namespace Restoring_Function.Logic
 {
-
-    public class ApproximationResult
-    {
-        public double[] Coefficients { get; set; }          // Коэффициенты функции
-        public double SumOfSquares { get; set; }            // Сумма квадратов отклонений
-        public double StandardDeviation { get; set; }       // Среднеквадратичное отклонение
-        public string Formula { get; set; }                 // Формула в читаемом виде
-        public Func<double, double> Function { get; set; }  // Функция для вычисления значений
-    }
     public class LeastSquaresCalculator
     {
+
+        /// <summary>
+        /// Линейная аппроксимация: y = a·x + b
+        /// </summary>
+        public ApproximationResult Linear(double[] x, double[] y)
+        {
+            int n = x.Length;
+
+            double sumX = x.Sum();
+            double sumY = y.Sum();
+            double sumXY = x.Zip(y, (xi, yi) => xi * yi).Sum();
+            double sumX2 = x.Sum(xi => xi * xi);
+
+            // Решаем систему:
+            // a·Σx² + b·Σx = Σxy
+            // a·Σx  + b·n  = Σy
+
+            double denominator = n * sumX2 - sumX * sumX;
+            double a = (n * sumXY - sumX * sumY) / denominator;
+            double b = (sumX2 * sumY - sumX * sumXY) / denominator;
+
+            // Вычисляем сумму квадратов отклонений
+            double sumSquares = 0;
+            for (int i = 0; i < n; i++)
+            {
+                double predicted = a * x[i] + b;
+                sumSquares += Math.Pow(y[i] - predicted, 2);
+            }
+
+            double stdDev = Math.Sqrt(sumSquares / n);
+
+            return new ApproximationResult
+            {
+                Coefficients = new double[] { a, b },
+                SumOfSquares = sumSquares,
+                StandardDeviation = stdDev,
+                Formula = $"y = {a:F4}·x + {b:F4}",
+                Function = (xVal) => a * xVal + b
+            };
+        }
+
         /// <summary>
         /// Квадратичная аппроксимация: y = a·x² + b·x + c
         /// </summary>
+        /// 
         public ApproximationResult Quadratic(double[] x, double[] y)
         {
             int n = x.Length;

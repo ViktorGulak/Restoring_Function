@@ -120,6 +120,9 @@ namespace Restoring_Function
 
                 switch (approxType)
                 {
+                    case "Linear":
+                        result = calculator.Linear(currentData.X, currentData.Y);
+                        break;
                     case "Quadratic":
                         result = calculator.Quadratic(currentData.X, currentData.Y);
                         break;
@@ -135,8 +138,8 @@ namespace Restoring_Function
                 GxResult.Text = result.Formula;
 
                 string comparison = result.StandardDeviation <= currentData.Delta
-                    ? $"✓ Отклонение σ = {result.StandardDeviation:F4} ≤ δ = {currentData.Delta} → модель адекватна"
-                    : $"✗ Отклонение σ = {result.StandardDeviation:F4} > δ = {currentData.Delta} → модель неадекватна";
+                    ? $"✓ Отклонение σ = {result.StandardDeviation:F6} ≤ δ = {currentData.Delta} → модель адекватна"
+                    : $"✗ Отклонение σ = {result.StandardDeviation:F6} > δ = {currentData.Delta} → модель неадекватна";
 
                 DeviationResult.Text = comparison;
 

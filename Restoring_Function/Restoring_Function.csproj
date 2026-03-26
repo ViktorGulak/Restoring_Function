@@ -83,6 +83,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Logic\ApproximationResult.cs" />
     <Compile Include="Logic\DataPoint.cs" />
     <Compile Include="Logic\FunctionData.cs" />
     <Compile Include="Logic\LeastSquaresCalculator.cs" />
