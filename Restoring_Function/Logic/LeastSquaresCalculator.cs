@@ -103,6 +103,46 @@ namespace Restoring_Function.Logic
         }
 
         /// <summary>
+        /// Гиперболическая аппроксимация: y = a/x + b
+        /// </summary>
+        public ApproximationResult Hyperbola(double[] x, double[] y)
+        {
+            int n = x.Length;
+
+            // Преобразуем переменные: t = 1/x
+            double[] t = x.Select(xi => 1.0 / xi).ToArray();
+
+            // Теперь задача сводится к линейной: y = a·t + b
+            double sumT = t.Sum();
+            double sumY = y.Sum();
+            double sumTY = t.Zip(y, (ti, yi) => ti * yi).Sum();
+            double sumT2 = t.Sum(ti => ti * ti);
+
+            double denominator = n * sumT2 - sumT * sumT;
+            double a = (n * sumTY - sumT * sumY) / denominator;
+            double b = (sumT2 * sumY - sumT * sumTY) / denominator;
+
+            // Вычисляем сумму квадратов отклонений
+            double sumSquares = 0;
+            for (int i = 0; i < n; i++)
+            {
+                double predicted = a / x[i] + b;
+                sumSquares += Math.Pow(y[i] - predicted, 2);
+            }
+
+            double stdDev = Math.Sqrt(sumSquares / n);
+
+            return new ApproximationResult
+            {
+                Coefficients = new double[] { a, b },
+                SumOfSquares = sumSquares,
+                StandardDeviation = stdDev,
+                Formula = $"y = {a:F4}/x + {b:F4}",
+                Function = (xVal) => a / xVal + b
+            };
+        }
+
+        /// <summary>
         /// Показательная аппроксимация: y = a·e^(b·x)
         /// Приводится к линейной путем логарифмирования: ln(y) = ln(a) + b·x
         /// </summary>
@@ -150,6 +190,46 @@ namespace Restoring_Function.Logic
                 StandardDeviation = stdDev,
                 Formula = $"y = {a:F4}·e^({b:F4}·x)",
                 Function = (xVal) => a * Math.Exp(b * xVal)
+            };
+        }
+
+        /// <summary>
+        /// Степенная аппроксимация (квадратный корень): y = a·√x + b
+        /// </summary>
+        public ApproximationResult PowerSqrt(double[] x, double[] y)
+        {
+            int n = x.Length;
+
+            // Преобразуем переменные: t = √x
+            double[] t = x.Select(xi => Math.Sqrt(xi)).ToArray();
+
+            // Теперь задача сводится к линейной: y = a·t + b
+            double sumT = t.Sum();
+            double sumY = y.Sum();
+            double sumTY = t.Zip(y, (ti, yi) => ti * yi).Sum();
+            double sumT2 = t.Sum(ti => ti * ti);
+
+            double denominator = n * sumT2 - sumT * sumT;
+            double a = (n * sumTY - sumT * sumY) / denominator;
+            double b = (sumT2 * sumY - sumT * sumTY) / denominator;
+
+            // Вычисляем сумму квадратов отклонений
+            double sumSquares = 0;
+            for (int i = 0; i < n; i++)
+            {
+                double predicted = a * Math.Sqrt(x[i]) + b;
+                sumSquares += Math.Pow(y[i] - predicted, 2);
+            }
+
+            double stdDev = Math.Sqrt(sumSquares / n);
+
+            return new ApproximationResult
+            {
+                Coefficients = new double[] { a, b },
+                SumOfSquares = sumSquares,
+                StandardDeviation = stdDev,
+                Formula = $"y = {a:F4}·√x + {b:F4}",
+                Function = (xVal) => a * Math.Sqrt(xVal) + b
             };
         }
 

@@ -129,6 +129,12 @@ namespace Restoring_Function
                     case "Exponential":
                         result = calculator.Exponential(currentData.X, currentData.Y);
                         break;
+                    case "PowerSqrt":
+                        result = calculator.PowerSqrt(currentData.X, currentData.Y);
+                        break;
+                    case "Hyperbola":
+                        result = calculator.Hyperbola(currentData.X, currentData.Y);
+                        break;
                     default:
                         result = calculator.Quadratic(currentData.X, currentData.Y);
                         break;

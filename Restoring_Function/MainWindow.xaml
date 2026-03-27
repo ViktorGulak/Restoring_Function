@@ -47,8 +47,9 @@
                   Margin="0,3,0, 0">
                 <ComboBoxItem Content="Линейная (y = a·x + b)" Tag="Linear"/>
                 <ComboBoxItem Content="Квадратичная (y = a·x² + b·x + c)" Tag="Quadratic"/>
-                <ComboBoxItem Content="Кубическая (y = a·x³ + b·x² + c·x + d)" Tag="Cubic"/>
+                <ComboBoxItem Content="Степенная (y = a·√x + b)" Tag="PowerSqrt"/>
                 <ComboBoxItem Content="Показательная (y = a·eᵇˣ)" Tag="Exponential"/>
+                <ComboBoxItem Content="Гиперболическая (y = a/x + b)" Tag="Hyperbola"/>
             </ComboBox>
 
             <!-- Кнопка расчёта -->
