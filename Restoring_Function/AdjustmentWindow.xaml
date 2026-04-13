@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Restoring_Function"
         mc:Ignorable="d"
-        Title="AdjustmentWindow" Height="450" Width="530">
+        Title="Заполнение точек" Height="450" Width="530">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

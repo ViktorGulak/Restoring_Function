@@ -151,17 +151,25 @@
                             <TextBlock Text="📐 Полученная формула g(x):" 
                                    FontWeight="Bold" 
                                    Margin="0,0,0,8"/>
-                            <TextBlock x:Name="GxResult" 
-                                   Text="—" 
-                                   FontFamily="Consolas"
-                                   FontSize="14"
-                                   TextWrapping="Wrap"/>
-                            <TextBlock x:Name="DeviationResult" 
-                                   Text="—" 
-                                   Margin="0,8,0,0"
-                                   FontFamily="Consolas"
-                                   FontSize="14"
-                                   />
+                            <TextBox x:Name="GxResult" 
+                                Text="—" 
+                                FontFamily="Consolas"
+                                FontSize="14"
+                                TextWrapping="Wrap"
+                                IsReadOnly="True"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Cursor="IBeam"/>
+                            <TextBox x:Name="DeviationResult" 
+                                Text="—" 
+                                Margin="0,10,0,0"
+                                FontFamily="Consolas"
+                                FontSize="14"
+                                TextWrapping="Wrap"
+                                IsReadOnly="True"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Cursor="IBeam"/>
                         </StackPanel>
                     </Border>
 
